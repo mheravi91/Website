@@ -1,0 +1,90 @@
+---
+title: "Designing, Prototyping, and Controlling a Portable Rehabilitation Robot for the Shoulder Physiotherapy and Training"
+description: "ICRoM 2019 paper presenting a 5-DOF wearable shoulder rehabilitation robot with EMG-informed control that enables at-home physiotherapy."
+favicon: favicon.svg
+thumbnail: exo_cover.png
+summary: "ICRoM 2019 paper presenting a 5-DOF wearable shoulder rehabilitation robot with EMG-informed control that enables at-home physiotherapy."
+conference: "2019 7th RSI International Conference on Robotics and Mechatronics (ICRoM)"
+year: 2019
+authors:
+  - name: "Mohamad Ali Soleimani"
+    notes: ["†"]
+  - name: "Hassan Zohoor"
+    notes: ["†"]
+  - name: "AliReza Fallah Yakhdani"
+    notes: ["†"]
+  - name: "Mohammad Heravi"
+    url: "https://mheravi.ir/"
+    notes: ["†"]
+  - name: "Esmaeil Mohammadi"
+    notes: ["†"]
+tags:
+  - Conference
+  - Rehabilitation Robotics
+  - Wearable Mechatronics
+links:
+  - name: "DOI"
+    url: "https://doi.org/10.1109/ICRoM48714.2019.9071844"
+    icon: "academicons:doi"
+doi: "10.1109/icrom48714.2019.9071844"
+
+notes:
+  - symbol: "†"
+    text: "School of Mechanical Eng., Sharif University of Technology"
+---
+
+import Video from "@components/Video.astro";
+import exo from "@assets/exo.mp4";
+import HighlightedSection from "@components/HighlightedSection.astro";
+import Figure from "@components/Figure.astro";
+import YouTubeVideo from "@components/YouTubeVideo.astro";
+
+<Video source={exo} />
+
+<HighlightedSection>
+
+## Abstract
+
+Stroke and accident survivors often lose shoulder mobility, but many rehabilitation exoskeletons stay confined to clinics. This paper introduces a portable five-degree-of-freedom wearable robot tailored for in-home physiotherapy sessions. The mechanism adapts to different body sizes, and the control loop leverages surface electromyography to modulate assistance while enforcing user safety.
+
+## Keywords
+
+Shoulder rehabilitation · Wearable robotics · EMG control · Portable exoskeleton · Physiotherapy automation
+</HighlightedSection>
+
+
+## Technical highlights
+
+- Adjustable 5-DOF kinematic design balances shoulder coverage with donning convenience for everyday use.
+- EMG-driven proportional control algorithm modulates actuation support in real time while enforcing safety limits.
+- Prototype integrates compact actuators, on-board sensing, and embedded electronics in a form factor suitable for domestic environments.
+
+## Demonstration video
+
+<Figure>
+  <YouTubeVideo slot="figure" videoId="UjHfzkZNNUA" />
+  <Fragment slot="caption">A short demonstration of the portable shoulder rehabilitation robot in use.</Fragment>
+</Figure>
+
+## Evaluation snapshot
+
+- Single-subject home-therapy case study covering 15 sessions.
+- Shoulder range of motion increased from 20° pre-therapy to 75° post-programme using the portable device.
+- Demonstrated feasibility of conducting supervised physiotherapy outside lab settings.
+
+
+## BibTeX
+
+```bibtex
+@INPROCEEDINGS{9071844,
+  author={Soleimani, Mohamad ali and Zohoor, Hassan and Yakhdani, AliReza Fallah and Heravi, Mohammad and Mohammadi, Esmaeil},
+  booktitle={2019 7th International Conference on Robotics and Mechatronics (ICRoM)}, 
+  title={Designing, Prototyping, and Controlling a Portable Rehabilitation Robot for the Shoulder Physiotherapy and Training}, 
+  year={2019},
+  volume={},
+  number={},
+  pages={281-284},
+  keywords={Actuators;Electromyography;Safety;Shoulder;Medical treatment;Rehabilitation robotics;Exoskeleton Robot;Shoulder Physiotherapy and Training;Robot-assisted Rehabilitation;EMG-based Controller},
+  doi={10.1109/ICRoM48714.2019.9071844}
+}
+```

@@ -1,0 +1,63 @@
+---
+title: Physics-informed data-driven modeling of rock motion dynamics in excavation using a high-fidelity simulator
+description: Open-access journal pre-proof describing a physics-informed neural network surrogate trained on 200 high-fidelity excavation simulations to forecast rock motion with physically consistent constraints.
+favicon: favicon.svg
+thumbnail: SIMPT_cover.png
+year: 2025
+authors:
+  - name: "Mohammad Heravi"
+    url: "https://mheravi.ir/"
+    notes: ["†"]
+  - name: "Amirmasoud Molaei"
+    url: "https://orcid.org/0000-0002-8800-5580"
+    notes: ["†"]
+  - name: "Reza Ghabcheloo"
+    url: "https://orcid.org/0000-0002-6043-4236"
+    notes: ["†"]
+conference: "Journal of Simulation Modelling Practice and Theory"
+notes:
+  - symbol: "†"
+    text: "Faculty of Engineering and Natural Sciences, Tampere University, Tampere, 33720, Finland"
+links:
+  - name: "Paper"
+    url: "/src/assets/1-s2.0-S1569190X25001431-main.pdf"
+    icon: "ri:file-pdf-2-line"
+  - name: "DOI"
+    url: "https://doi.org/10.1016/j.simpat.2025.103208"
+    icon: "academicons:doi"
+---
+
+import Video from "@components/Video.astro";
+import excavation from "@assets/Excavation.mp4";
+import HighlightedSection from "@components/HighlightedSection.astro";
+
+<Video source={excavation} />
+
+<HighlightedSection>
+
+## Abstract
+
+In this paper, the problem of predicting the motion of large rocks during excavation is addressed. During excavation, complex interactions are observed among the excavator bucket, rock, and soil, which are not effectively captured using analytical models due to nonlinearities and unknown phenomena. To address this, a physics-informed, data-driven framework is proposed, in which a predictive model of the rock dynamics is learned using data obtained from a high-fidelity physics-based simulator. Specifically, a physics-informed neural network is employed, structured as a multilayer perceptron that receives the state variables and control inputs from a fixed-length temporal window. A kinematic constraint is incorporated into the loss function to enforce physical consistency. The model is trained and evaluated using data from 200 experiments. The effect of the look-back window length is examined, and a window length of two is found to yield the minimum prediction error. The prediction error distributions are statistically evaluated for different soil and rock scenarios, as well as across different prediction horizons (1–20). The model’s accuracy is shown to be within the desired threshold.
+
+## Keywords
+Autonomous excavation · Rock motion dynamics · Data-driven modeling · Physics engine simulation · Predictive model · Physics-informed neural networks
+
+</HighlightedSection>
+
+
+
+## BibTeX citation
+
+```bibtex
+@article{HERAVI2025103208,
+title = {Physics-informed data-driven modeling of rock motion dynamics in excavation using a high-fidelity simulator},
+journal = {Simulation Modelling Practice and Theory},
+volume = {145},
+pages = {103208},
+year = {2025},
+issn = {1569-190X},
+doi = {https://doi.org/10.1016/j.simpat.2025.103208},
+url = {https://www.sciencedirect.com/science/article/pii/S1569190X25001431},
+author = {Mohammad Heravi and Amirmasoud Molaei and Reza Ghabcheloo},
+}
+```

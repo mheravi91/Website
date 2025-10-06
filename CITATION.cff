@@ -1,0 +1,64 @@
+cff-version: 1.2.0
+message: "Thank you for using these papers — if you use them in your work, please cite the entries below."
+title: "Collection of research papers — Mohammad Heravi"
+authors:
+  - family-names: Heravi
+    given-names: Mohammad
+    url: "https://mheravi.ir/"
+    orcid: "https://orcid.org/0009-0007-2582-083X" 
+date-released: 2025-10-07
+version: 1.0.0
+license: CC-BY-SA-4.0
+repository-code: "https://github.com/mheravi91/Website"
+keywords:
+  - Autonomous excavation
+  - Rock motion dynamics
+  - Data-driven modeling
+  - Physics engine simulation
+  - Predictive model
+  - Physics-informed neural networks
+  - Shoulder rehabilitation
+  - Wearable robotics
+  - EMG control
+  - Portable exoskeleton
+  - Physiotherapy automation
+
+references:
+  - type: conference-paper
+    title: "Designing, Prototyping, and Controlling a Portable Rehabilitation Robot for the Shoulder Physiotherapy and Training"
+
+    authors:
+      - family-names: Soleimani
+        given-names: Mohamad Ali
+      - family-names: Zohoor
+        given-names: Hassan
+      - family-names: Fallah Yakhdani
+        given-names: AliReza
+      - family-names: Heravi
+        given-names: Mohammad
+      - family-names: Mohammadi
+        given-names: Esmaeil
+    year: 2019
+    collection-title: "2019 7th RSI International Conference on Robotics and Mechatronics (ICRoM)"
+    publisher: "IEEE"
+    identifiers:
+      - type: doi
+        value: 10.1109/icrom48714.2019.9071844
+    url: "https://doi.org/10.1109/ICRoM48714.2019.9071844"
+
+  - type: article
+    title: "Physics-informed data-driven modeling of rock motion dynamics in excavation using a high-fidelity simulator"
+    authors:
+      - family-names: Heravi
+        given-names: Mohammad
+      - family-names: Molaei
+        given-names: Amirmasoud
+      - family-names: Ghabcheloo
+        given-names: Reza
+    year: 2025
+    journal: "Simulation Modelling Practice and Theory"
+    publisher: "Elsevier"
+    identifiers:
+      - type: doi
+        value: 10.1016/j.simpat.2025.103208
+    url: "https://doi.org/10.1016/j.simpat.2025.103208"

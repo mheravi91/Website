@@ -1,10 +1,375 @@
 ---
+import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 
+const profile = {
+  name: "Mohammad Heravi",
+  role: "Doctoral Researcher · Tampere University",
+  affiliation:
+    "Tampere University — Automation Technology and Mechanical Engineering",
+  location: "Tampere, Finland",
+  statement:
+    "I am a doctoral researcher in the field of Automation Technology and Mechanical Engineering at Tampere University, specializing in the study of physics-informed data-driven modeling and reinforcement learning (RL) for reliable field robotics.",
+  bio: "My research integrates high-fidelity modeling with control and reinforcement learning methodologies to enhance the safety and autonomy of heavy machinery.",
+  email: "contact@mheravi.ir",
+  photo: "https://papers.mheravi.ir/profile.jpg",
+  researchFocus: [
+    "Physics-informed, data-driven modeling",
+    "Robotics",
+    "Control",
+    "Excavation autonomy",
+    "Reinforcement learning",
+  ],
+};
+
+const contactLinks = [
+  {
+    label: "Email",
+    href: `mailto:${profile.email}`,
+    icon: `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-svg">
+        <rect x="2" y="5" width="20" height="14" rx="2" />
+        <path d="M22 7l-10 7L2 7" />
+      </svg>
+    `,
+    descriptor: profile.email,
+  },
+  {
+    label: "Google Scholar",
+    href: "https://scholar.google.com/citations?user=DYUEpmsAAAAJ&hl=en",
+    icon: `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-svg">
+        <circle cx="11" cy="11" r="6" />
+        <path d="M21 21l-4.35-4.35" />
+      </svg>
+    `,
+    descriptor: "Citations & publications",
+  },
+  {
+    label: "ORCID",
+    href: "https://orcid.org/0009-0007-2582-083X",
+    icon: `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-svg">
+        <rect x="3" y="4" width="14" height="16" rx="2" />
+        <circle cx="11" cy="11" r="2" />
+        <path d="M21 4v16" />
+      </svg>
+    `,
+    descriptor: "0009-0007-2582-083X",
+  },
+  {
+    label: "GitHub",
+    href: "https://github.com/mheravi91",
+    icon: `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-svg">
+        <path d="M16 18l6-6-6-6" />
+        <path d="M8 6L2 12l6 6" />
+      </svg>
+    `,
+    descriptor: "@mheravi91",
+  },
+  {
+    label: "Book a Meeting",
+    href: "https://cal.com/heravi/",
+    icon: `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-svg">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+        <line x1="16" y1="2" x2="16" y2="6" />
+        <line x1="8" y1="2" x2="8" y2="6" />
+        <line x1="3" y1="10" x2="21" y2="10" />
+      </svg>
+    `,
+    descriptor: "Schedule a call or meeting",
+  },
+];
+
 const papers = await getCollection("papers");
+const sortedPapers = papers
+  .slice()
+  .sort((a, b) => {
+    // Prefer numeric year if present, otherwise try parsing a date string, then fall back to 0
+  // @ts-ignore: allow any - frontmatter scripts in Astro can be checked differently in some setups
+  const getYear = (entry) => {
+      // 1) explicit numeric year in frontmatter
+      const y = entry.data?.year ?? entry.data?.date ?? null;
+      if (typeof y === "number") return y;
+      if (typeof y === "string") {
+        const parsed = parseInt(y.slice(0, 4), 10);
+        if (Number.isFinite(parsed)) return parsed;
+      }
+
+      // 2) try to extract a trailing 4-digit year from the entry id/slug (e.g., SIMPAT2025)
+      if (entry.id) {
+        const m = String(entry.id).match(/(19|20)\d{2}$/);
+        if (m) return parseInt(m[0], 10);
+      }
+
+      // 3) fallback to 0 (oldest)
+      return 0;
+    };
+
+    const ay = getYear(a);
+    const by = getYear(b);
+
+    // Sort by year descending (newest first)
+    if (ay !== by) return by - ay;
+
+    // If years are equal or missing, sort alphabetically by title
+    return a.data.title.localeCompare(b.data.title);
+  });
+
+const canonicalLinkNames = ["paper", "arxiv", "project", "pdf"];
+
+const papersWithMeta = sortedPapers.map((entry) => {
+  const canonicalLink = entry.data.links.find((link) =>
+    canonicalLinkNames.includes(link.name.toLowerCase())
+  );
+
+  return {
+    entry,
+    canonicalLink: canonicalLink ?? entry.data.links[0],
+    thumbnail: entry.data.thumbnail ? `/${entry.data.thumbnail}` : undefined,
+  };
+});
+
+const featuredPapers = papersWithMeta.slice(
+  0,
+  Math.min(3, papersWithMeta.length)
+);
 ---
 
-<h2>Papers</h2>
-<div>
-  {papers.map((paper) => <div>{paper.data.title}</div>)}
-</div>
+<Layout
+  title={profile.name}
+  description={`${profile.statement} ${profile.bio}`}
+  favicon="favicon.svg"
+  thumbnail="screenshot-light.png"
+>
+  <main class="mx-auto flex w-full !max-w-none flex-col gap-24 lg:w-[76rem] xl:w-[88rem]">
+    <section
+      class="relative isolate w-full overflow-hidden rounded-[2.75rem] border border-zinc-200/60 bg-gradient-to-br from-zinc-950 via-slate-900 to-blue-900 px-8 py-16 text-zinc-50 shadow-[0_40px_120px_-60px_rgba(15,23,42,0.8)] dark:border-zinc-800/70 dark:from-zinc-900 dark:via-zinc-950 dark:to-blue-950 md:px-14 md:py-20"
+    >
+      <div
+        class="pointer-events-none absolute inset-0 opacity-60 [background:radial-gradient(circle_at_top,_rgba(96,165,250,0.5),_transparent_65%)]"
+      />
+      <div
+        class="pointer-events-none absolute -left-32 top-1/2 h-[22rem] w-[22rem] -translate-y-1/2 rounded-full bg-blue-500/20 blur-[120px]"
+      />
+      <div
+        class="pointer-events-none absolute -right-24 top-16 h-[18rem] w-[18rem] rounded-full bg-purple-500/25 blur-[120px]"
+      />
+
+      <div class="relative grid items-stretch gap-16 lg:grid-cols-[1.05fr,1.1fr] xl:gap-20">
+        <div class="order-2 hidden flex-col gap-8 lg:flex">
+          <figure>
+            <div
+              class="relative mx-auto flex h-full max-h-[32rem] w-full max-w-[28rem] items-center justify-center overflow-hidden rounded-[3rem] border border-white/20 bg-white/10 shadow-[0_50px_160px_-70px_rgba(30,64,175,0.65)] backdrop-blur"
+            >
+              <div
+                class="absolute inset-0 border border-white/10 [mask-image:radial-gradient(circle_at_top,rgba(255,255,255,1),rgba(255,255,255,0.2))]"
+              />
+              <img
+                src={profile.photo}
+                alt={`Portrait of ${profile.name}`}
+                class="relative h-full w-full object-cover object-center"
+                loading="lazy"
+              />
+            </div>
+          </figure>
+
+          <div class="mt-auto w-full max-w-[28rem] mx-auto flex flex-col gap-6 rounded-[2.25rem] border border-zinc-200 bg-white/95 p-7 text-zinc-900 shadow-[0_36px_120px_-60px_rgba(37,99,235,0.15)] backdrop-blur dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50">
+            <div class="flex flex-col gap-2">
+              <span class="text-[0.65rem] uppercase tracking-[0.4em] text-zinc-500 dark:text-zinc-400">
+                Affiliation
+              </span>
+              <p class="text-base text-zinc-900 dark:text-zinc-50">{profile.affiliation}</p>
+            </div>
+            <div class="flex flex-col gap-2">
+              <span class="text-[0.65rem] uppercase tracking-[0.4em] text-zinc-500 dark:text-zinc-400">
+                Research focus
+              </span>
+              <div class="flex flex-wrap gap-3">
+                {profile.researchFocus.map((focus) => (
+                  <span class="inline-flex items-center rounded-full bg-blue-100 px-3.5 py-1 text-xs font-semibold text-blue-800 dark:bg-blue-800 dark:text-blue-100">
+                    {focus}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="order-1 flex flex-col gap-12 lg:order-2">
+          <div class="flex flex-col gap-4">
+            <span class="text-xs uppercase tracking-[0.4em] text-blue-200/80">
+              {profile.role}
+            </span>
+            <h1
+              class="text-left text-5xl font-semibold leading-tight text-balance text-white md:text-6xl"
+            >
+              {profile.name}
+            </h1>
+            <p class="text-left text-lg text-zinc-200/90 md:text-xl">
+              {profile.statement}
+            </p>
+            <p class="text-left text-base text-zinc-300/90 md:text-lg md:leading-relaxed">
+              {profile.bio}
+            </p>
+          </div>
+
+          <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-4">
+              <span class="text-[0.65rem] uppercase tracking-[0.4em] text-blue-200/80">
+                Connect
+              </span>
+              <div class="grid gap-3">
+                {contactLinks.map((link) => {
+                  const external = link.href.startsWith("http");
+                  return (
+                  <a
+                    href={link.href}
+                    class="inline-flex items-center justify-between rounded-2xl border border-white/15 bg-white/10 px-6 py-3 text-sm font-semibold text-white backdrop-blur transition hover:-translate-y-1 hover:border-blue-200/70 hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                    target={external ? "_blank" : undefined}
+                    rel={external ? "noopener noreferrer" : undefined}
+                  >
+                    <span class="flex items-center gap-2">
+                        <span aria-hidden="true" class="h-5 w-5 inline-block" set:html={link.icon}></span>
+                        {link.label}
+                      </span>
+                    {link.descriptor && (
+                      <span class="text-xs font-normal tracking-[0.2em] text-blue-100/80">
+                        {link.descriptor}
+                      </span>
+                    )}
+                  </a>
+                );})}
+              </div>
+            </div>
+
+
+            <div class="flex flex-col gap-6 lg:hidden">
+              <div class="grid gap-3">
+                {contactLinks.map((link) => { const external = link.href.startsWith("http"); return (
+                  <a
+                    href={link.href}
+                    class="inline-flex items-center justify-between rounded-2xl border border-white/15 bg-white/10 px-5 py-3 text-sm font-semibold text-white backdrop-blur transition hover:-translate-y-1 hover:border-blue-200/70 hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                    target={external ? "_blank" : undefined}
+                    rel={external ? "noopener noreferrer" : undefined}
+                  >
+                    <span class="flex items-center gap-2">
+                      <span aria-hidden="true" class="h-5 w-5 inline-block" set:html={link.icon}></span>
+                      {link.label}
+                    </span>
+                    {link.descriptor && (
+                      <span class="text-[0.65rem] font-normal tracking-[0.2em] text-blue-100/80">
+                        {link.descriptor}
+                      </span>
+                    )}
+                  </a>
+                );})}
+              </div>
+              <div class="flex flex-col gap-6 rounded-[2.25rem] border border-zinc-200 bg-white/95 p-6 text-zinc-900 shadow-[0_24px_80px_-60px_rgba(37,99,235,0.12)] backdrop-blur dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50">
+                <div class="flex flex-col gap-2">
+                  <span class="text-[0.65rem] uppercase tracking-[0.4em] text-zinc-500 dark:text-zinc-400">
+                    Affiliation
+                  </span>
+                  <p class="text-base text-zinc-900 dark:text-zinc-50">{profile.affiliation}</p>
+                </div>
+                <div class="flex flex-col gap-2">
+                  <span class="text-[0.65rem] uppercase tracking-[0.4em] text-zinc-500 dark:text-zinc-400">
+                    Location
+                  </span>
+                  <p class="text-base text-zinc-900 dark:text-zinc-50">{profile.location}</p>
+                </div>
+                <div class="flex flex-col gap-2">
+                  <span class="text-[0.65rem] uppercase tracking-[0.4em] text-zinc-500 dark:text-zinc-400">
+                    Primary email
+                  </span>
+                  <a
+                    href={`mailto:${profile.email}`}
+                    class="text-base font-semibold text-blue-700 dark:text-blue-200 hover:underline"
+                  >
+                    {profile.email}
+                  </a>
+                </div>
+                <div class="flex flex-col gap-2">
+                  <span class="text-[0.65rem] uppercase tracking-[0.4em] text-zinc-500 dark:text-zinc-400">
+                    Research focus
+                  </span>
+                  <div class="flex flex-wrap gap-3">
+                    {profile.researchFocus.map((focus) => (
+                      <span class="inline-flex items-center rounded-full bg-blue-100 px-3.5 py-1 text-xs font-semibold text-blue-800 dark:bg-blue-800 dark:text-blue-100">
+                        {focus}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <p class="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
+                  {profile.bio}
+                </p>
+                <div class="flex flex-wrap gap-3">
+                  <a
+                    href="#spotlight"
+                    class="inline-flex items-center gap-3 rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition hover:-translate-y-1 hover:shadow-xl"
+                  >
+                    View selected papers
+                    <span aria-hidden="true">→</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {featuredPapers.length > 0 && (
+      <section id="spotlight" class="flex w-full flex-col gap-8">
+        <div class="flex flex-col gap-3">
+          <h2 class="text-left text-4xl font-semibold">Papers</h2>
+        </div>
+        <div class="grid gap-6 lg:grid-cols-3">
+          {featuredPapers.map(({ entry, canonicalLink, thumbnail }) => (
+            <article
+              class="group flex h-full flex-col overflow-hidden rounded-[2.25rem] border border-zinc-200/60 bg-white/85 shadow-[0_24px_90px_-60px_rgba(15,23,42,0.45)] transition hover:-translate-y-2 hover:border-blue-200/80 hover:shadow-[0_40px_120px_-60px_rgba(37,99,235,0.45)] dark:border-zinc-800/60 dark:bg-zinc-900/85"
+            >
+              {thumbnail && (
+                <div class="relative aspect-[4/3] overflow-hidden">
+                  <img
+                    src={thumbnail}
+                    alt={`Thumbnail for ${entry.data.title}`}
+                    class="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                </div>
+              )}
+              <div class="flex flex-1 flex-col gap-4 p-7">
+                <span class="text-xs uppercase tracking-[0.25em] text-blue-500/80">
+                  {entry.data.conference ?? "Research"}
+                </span>
+                <h3 class="text-left text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
+                  {entry.data.title}
+                </h3>
+                <p class="text-left text-base text-zinc-600 dark:text-zinc-300">
+                  {entry.data.description}
+                </p>
+                <p class="text-sm text-zinc-500 dark:text-zinc-400">
+                  {entry.data.authors.map((author) => author.name).join(", ")}
+                </p>
+                <div class="mt-auto flex flex-wrap gap-3 pt-4">
+                  <a
+                    href={`/papers/${entry.id}/`}
+                    class="inline-flex items-center gap-2 rounded-full bg-blue-500/20 px-4 py-2 text-sm font-semibold text-blue-100 transition hover:bg-blue-500/30"
+                  >
+                    View the paper
+                    <span aria-hidden="true">→</span>
+                  </a>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    )}
+  </main>
+</Layout>

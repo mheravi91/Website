@@ -11,6 +11,8 @@ const papers = defineCollection({
     description: z.string(),
     favicon: z.string().optional(),
     thumbnail: z.string().optional(),
+    // Optional short summary (present in some existing MDX files)
+    summary: z.string().optional(),
     authors: z.array(
       z.object({
         name: z.string(),
@@ -20,6 +22,8 @@ const papers = defineCollection({
       })
     ),
     conference: z.string().optional(),
+    // Publication year (numeric) used for sorting
+    year: z.number().optional(),
     notes: z
       .array(
         z.object({
@@ -35,6 +39,10 @@ const papers = defineCollection({
         icon: z.string().optional(),
       })
     ),
+    // Optional DOI string (not originally in schema but used in content)
+    doi: z.string().optional(),
+    // Optional tag list
+    tags: z.array(z.string()).optional(),
   }),
 });
 

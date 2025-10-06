@@ -10,23 +10,63 @@
   }
 }
 
-body {
-  font-family: "Noto Sans", sans-serif;
-}
+/* Links: provide explicit fallbacks and accessible focus styles in addition to Tailwind utilities */
 a {
-  @apply text-blue-500 dark:text-blue-300 hover:underline;
+  color: #2563eb; /* blue-600 */
+  text-decoration: none;
 }
-p {
-  @apply text-lg w-full;
+
+@media (prefers-color-scheme: dark) {
+  a {
+    color: #7dd3fc; /* sky-300 for better contrast on dark */
+  }
+}
+
+a:hover,
+a:focus {
+  text-decoration: underline;
+  outline: none;
+}
+
+/* Focus-visible for keyboard users */
+a:focus-visible {
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.25);
+  border-radius: 0.25rem;
+}
+
+/* Prefer Inter for UI, fallback to Noto Sans for broad glyph coverage */
+body {
+  font-family: "Inter", "Noto Sans", system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 h1 {
-  @apply text-5xl text-center font-medium;
+  @apply text-5xl md:text-6xl font-semibold leading-tight;
+  /* Fallbacks for tools that don't evaluate Tailwind's @apply */
+  font-size: 3rem;
+  line-height: 1.05;
 }
+
+p {
+  /* Slightly larger base paragraph text with improved contrast */
+  @apply text-lg md:text-xl text-zinc-800 dark:text-zinc-200 leading-relaxed;
+  font-size: 1.125rem; /* 18px fallback */
+  color: #262626; /* near-black for better contrast */
+}
+
+@media (prefers-color-scheme: dark) {
+  p {
+    color: #e6eef8; /* light color for dark bg */
+  }
+}
+
 h2 {
-  @apply w-full text-3xl font-bold;
+  @apply w-full text-4xl font-semibold;
 }
+
 h3 {
-  @apply w-full text-xl font-bold;
+  @apply w-full text-2xl font-semibold;
 }
 h4 {
   @apply w-full font-bold;
@@ -46,4 +86,60 @@ ul {
 }
 ol {
   @apply prose list-decimal list-inside w-full;
+}
+
+/* Make list items explicit about color so MDX lists remain readable in both themes */
+ul,
+ol,
+ul li,
+ol li {
+  color: #262626; /* near-black for light theme */
+}
+
+@media (prefers-color-scheme: dark) {
+  ul,
+  ol,
+  ul li,
+  ol li {
+    color: #e6eef8; /* light color for dark bg */
+  }
+}
+
+/* Stronger overrides for Tailwind Typography prose class used by MDX */
+.prose ul,
+.prose ol,
+.prose li,
+.prose li * {
+  color: #262626 !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .prose ul,
+  .prose ol,
+  .prose li,
+  .prose li * {
+    color: #e6eef8 !important;
+  }
+}
+
+/* Icon styles for inline SVGs used in contact links */
+.icon-svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: inline-block;
+  vertical-align: middle;
+  color: inherit; /* inherit text color so icons match link color */
+}
+
+.icon-svg path,
+.icon-svg circle,
+.icon-svg rect {
+  stroke: currentColor;
+  fill: none;
+}
+
+.inline-block:hover .icon-svg,
+.inline-block:focus .icon-svg {
+  transform: translateY(-2px) scale(1.05);
+  transition: transform 180ms ease;
 }

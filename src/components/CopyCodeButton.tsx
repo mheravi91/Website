@@ -14,7 +14,7 @@ export function CopyCodeButton({ children }: { children: React.ReactNode }) {
   }, []);
 
   const handleClick = () => {
-    if (preRef.current) {
+    if (preRef.current && typeof navigator !== 'undefined' && navigator?.clipboard) {
       // Clone the pre element to work with
       const preClone = preRef.current.cloneNode(true) as HTMLPreElement;
 
@@ -39,7 +39,11 @@ export function CopyCodeButton({ children }: { children: React.ReactNode }) {
     <button
       ref={buttonRef}
       onClick={handleClick}
-      className="absolute top-3 right-3 opacity-0 transition-opacity duration-200 ease-out group-hover:opacity-100 group-hover:transition-none"
+      type="button"
+      aria-live="polite"
+      aria-label={showSuccess ? "Code copied" : "Copy code"}
+      title={showSuccess ? "Copied!" : "Copy code"}
+      className="absolute top-3 right-3 opacity-0 transition-opacity duration-200 ease-out group-hover:opacity-100 group-hover:transition-none focus:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md p-1 bg-white/70 dark:bg-zinc-700/70 hover:bg-white dark:hover:bg-zinc-600"
     >
       <Icon
         icon={showSuccess ? "ri:check-line" : "ri:file-copy-line"}
