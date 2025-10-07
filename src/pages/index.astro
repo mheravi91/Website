@@ -257,92 +257,91 @@ const profilePageSchema = {
                 );})}
               </div>
             </div>
+          </div>
 
-
-            <div class="flex flex-col gap-6 lg:hidden">
-              <figure class="mx-auto flex h-40 w-40 items-center justify-center overflow-hidden rounded-3xl border border-white/30 bg-white/10 shadow-[0_20px_60px_-30px_rgba(30,64,175,0.55)]">
-                <img
-                  src={profile.photo}
-                  alt={`Portrait of ${profile.name}`}
-                  class="h-full w-full object-cover object-center"
-                  loading="lazy"
-                />
-              </figure>
-              <div class="flex flex-col gap-4">
-                <span class="text-sm font-semibold uppercase tracking-[0.3em] text-blue-100/90">
-                  Connect
-                </span>
-                <div class="grid gap-3 sm:grid-cols-2">
-                  {contactLinks.map((link) => {
-                    const external = link.href.startsWith("http");
-                    return (
-                    <a
-                      href={link.href}
-                      class="group grid h-full w-full grid-cols-1 gap-3 rounded-2xl border border-white/20 bg-white/10 p-4 text-sm font-semibold text-white backdrop-blur transition hover:-translate-y-1 hover:border-blue-200/70 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 sm:grid-cols-[auto,minmax(0,1fr)] sm:items-center"
-                      target={external ? "_blank" : undefined}
-                      rel={external ? "noopener noreferrer" : undefined}
-                    >
-                      <span class="flex items-center gap-3 text-base font-semibold">
-                        <span aria-hidden="true" class="h-5 w-5 inline-block" set:html={link.icon}></span>
-                        {link.label}
+          <div class="flex flex-col gap-6 lg:hidden">
+            <figure class="mx-auto flex h-40 w-40 items-center justify-center overflow-hidden rounded-3xl border border-white/30 bg-white/10 shadow-[0_20px_60px_-30px_rgba(30,64,175,0.55)]">
+              <img
+                src={profile.photo}
+                alt={`Portrait of ${profile.name}`}
+                class="h-full w-full object-cover object-center"
+                loading="lazy"
+              />
+            </figure>
+            <div class="flex flex-col gap-4">
+              <span class="text-sm font-semibold uppercase tracking-[0.3em] text-blue-100/90">
+                Connect
+              </span>
+              <div class="grid gap-3 sm:grid-cols-2">
+                {contactLinks.map((link) => {
+                  const external = link.href.startsWith("http");
+                  return (
+                  <a
+                    href={link.href}
+                    class="group grid h-full w-full grid-cols-1 gap-3 rounded-2xl border border-white/20 bg-white/10 p-4 text-sm font-semibold text-white backdrop-blur transition hover:-translate-y-1 hover:border-blue-200/70 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 sm:grid-cols-[auto,minmax(0,1fr)] sm:items-center"
+                    target={external ? "_blank" : undefined}
+                    rel={external ? "noopener noreferrer" : undefined}
+                  >
+                    <span class="flex items-center gap-3 text-base font-semibold">
+                      <span aria-hidden="true" class="h-5 w-5 inline-block" set:html={link.icon}></span>
+                      {link.label}
+                    </span>
+                    {link.descriptor && (
+                      <span class="text-[0.7rem] font-medium text-blue-100/80 sm:self-center sm:text-right sm:text-sm sm:leading-snug sm:text-blue-100/70 sm:tracking-[0.08em] sm:group-hover:text-blue-50">
+                        {link.descriptor}
                       </span>
-                      {link.descriptor && (
-                        <span class="text-[0.7rem] font-medium text-blue-100/80 sm:self-center sm:text-right sm:text-sm sm:leading-snug sm:text-blue-100/70 sm:tracking-[0.08em] sm:group-hover:text-blue-50">
-                          {link.descriptor}
-                        </span>
-                      )}
-                    </a>
-                  );})}
+                    )}
+                  </a>
+                );})}
+              </div>
+            </div>
+            <div class="flex flex-col gap-6 rounded-[2.25rem] border border-zinc-200 bg-white/95 p-6 text-zinc-900 shadow-[0_24px_80px_-60px_rgba(37,99,235,0.12)] backdrop-blur dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50">
+              <div class="flex flex-col gap-2">
+                <span class="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-600 dark:text-zinc-300">
+                  Affiliation
+                </span>
+                <p class="text-base text-zinc-900 dark:text-zinc-50">{profile.affiliation}</p>
+              </div>
+              <div class="flex flex-col gap-2">
+                <span class="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-600 dark:text-zinc-300">
+                  Location
+                </span>
+                <p class="text-base text-zinc-900 dark:text-zinc-50">{profile.location}</p>
+              </div>
+              <div class="flex flex-col gap-2">
+                <span class="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-600 dark:text-zinc-300">
+                  Primary email
+                </span>
+                <a
+                  href={`mailto:${profile.email}`}
+                  class="text-base font-semibold text-blue-700 dark:text-blue-200 hover:underline"
+                >
+                  {profile.email}
+                </a>
+              </div>
+              <div class="flex flex-col gap-2">
+                <span class="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-600 dark:text-zinc-300">
+                  Research focus
+                </span>
+                <div class="flex flex-wrap gap-3">
+                  {profile.researchFocus.map((focus) => (
+                    <span class="inline-flex items-center rounded-full bg-blue-100/90 px-4 py-1.5 text-sm font-semibold text-blue-900 shadow-sm shadow-blue-200/60 dark:bg-blue-800/80 dark:text-blue-100 dark:shadow-blue-900/40">
+                      {focus}
+                    </span>
+                  ))}
                 </div>
               </div>
-              <div class="flex flex-col gap-6 rounded-[2.25rem] border border-zinc-200 bg-white/95 p-6 text-zinc-900 shadow-[0_24px_80px_-60px_rgba(37,99,235,0.12)] backdrop-blur dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50">
-                <div class="flex flex-col gap-2">
-                  <span class="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-600 dark:text-zinc-300">
-                    Affiliation
-                  </span>
-                  <p class="text-base text-zinc-900 dark:text-zinc-50">{profile.affiliation}</p>
-                </div>
-                <div class="flex flex-col gap-2">
-                  <span class="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-600 dark:text-zinc-300">
-                    Location
-                  </span>
-                  <p class="text-base text-zinc-900 dark:text-zinc-50">{profile.location}</p>
-                </div>
-                <div class="flex flex-col gap-2">
-                  <span class="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-600 dark:text-zinc-300">
-                    Primary email
-                  </span>
-                  <a
-                    href={`mailto:${profile.email}`}
-                    class="text-base font-semibold text-blue-700 dark:text-blue-200 hover:underline"
-                  >
-                    {profile.email}
-                  </a>
-                </div>
-                <div class="flex flex-col gap-2">
-                  <span class="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-600 dark:text-zinc-300">
-                    Research focus
-                  </span>
-                  <div class="flex flex-wrap gap-3">
-                    {profile.researchFocus.map((focus) => (
-                      <span class="inline-flex items-center rounded-full bg-blue-100/90 px-4 py-1.5 text-sm font-semibold text-blue-900 shadow-sm shadow-blue-200/60 dark:bg-blue-800/80 dark:text-blue-100 dark:shadow-blue-900/40">
-                        {focus}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <p class="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
-                  {profile.bio}
-                </p>
-                <div class="flex flex-wrap gap-3">
-                  <a
-                    href="#spotlight"
-                    class="inline-flex items-center gap-3 rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition hover:-translate-y-1 hover:shadow-xl"
-                  >
-                    View selected papers
-                    <span aria-hidden="true">→</span>
-                  </a>
-                </div>
+              <p class="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
+                {profile.bio}
+              </p>
+              <div class="flex flex-wrap gap-3">
+                <a
+                  href="#spotlight"
+                  class="inline-flex items-center gap-3 rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition hover:-translate-y-1 hover:shadow-xl"
+                >
+                  View selected papers
+                  <span aria-hidden="true">→</span>
+                </a>
               </div>
             </div>
           </div>
