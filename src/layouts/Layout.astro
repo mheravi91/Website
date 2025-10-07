@@ -9,6 +9,10 @@ interface Props {
   favicon: string;
   thumbnail?: string;
   structuredData?: StructuredData | StructuredData[];
+  socialTitle?: string;
+  socialDescription?: string;
+  socialImage?: string;
+  socialImageAlt?: string;
 }
 
 const {
@@ -17,6 +21,10 @@ const {
   favicon,
   thumbnail,
   structuredData,
+  socialTitle,
+  socialDescription,
+  socialImage,
+  socialImageAlt,
 } = Astro.props;
 
 const DEFAULT_DESCRIPTION =
@@ -52,11 +60,25 @@ const makeAbsolute = (path?: string) => {
   return normalized;
 };
 
+const guessMimeType = (url?: string) => {
+  if (!url) return undefined;
+  const lower = url.toLowerCase();
+  if (lower.endsWith(".png")) return "image/png";
+  if (lower.endsWith(".webp")) return "image/webp";
+  if (lower.endsWith(".gif")) return "image/gif";
+  return "image/jpeg";
+};
+
 const faviconPath = resolveAssetPath(favicon);
 const absoluteFavicon = makeAbsolute(faviconPath);
 const ogImageUrl = thumbnail
   ? makeAbsolute(resolveAssetPath(thumbnail))
   : undefined;
+const twitterImageUrl = socialImage
+  ? makeAbsolute(resolveAssetPath(socialImage))
+  : ogImageUrl;
+const twitterImageAlt =
+  socialImageAlt ?? (twitterImageUrl ? `Preview image for ${englishName}` : undefined);
 const homepageUrl = makeAbsolute("/");
 const schemaOrigin = (() => {
   if (homepageUrl) return new URL(homepageUrl).origin;
@@ -131,6 +153,11 @@ const normalizedStructuredData = [
   ...defaultStructuredData,
   ...userStructuredData,
 ];
+
+const twitterTitle = socialTitle ?? title;
+const twitterDescription = (socialDescription ?? metaDescription).slice(0, 280);
+const platformImage = twitterImageUrl ?? ogImageUrl;
+const ogImageType = guessMimeType(ogImageUrl);
 ---
 
 <!doctype html>
@@ -177,11 +204,16 @@ const normalizedStructuredData = [
         content={`Preview image for ${englishName}`}
       />
     )}
+    {ogImageUrl && <meta property="og:image:secure_url" content={ogImageUrl} />}
+    {ogImageType && <meta property="og:image:type" content={ogImageType} />}
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={metaDescription} />
-    {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
+    <meta name="twitter:title" content={twitterTitle} />
+    <meta name="twitter:description" content={twitterDescription} />
+    {platformImage && <meta name="twitter:image" content={platformImage} />}
+    {twitterImageAlt && <meta name="twitter:image:alt" content={twitterImageAlt} />}
+    <meta name="twitter:site" content="@mheravi91" />
+    <meta name="twitter:creator" content="@mheravi91" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
