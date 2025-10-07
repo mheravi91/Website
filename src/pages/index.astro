@@ -142,8 +142,8 @@ const profilePageSchema = {
   "@type": "ProfilePage",
   name: profile.name,
   alternateName: ["محمد هروی"],
-  headline: profile.statement,
-  description: `${profile.statement} ${profile.bio}`,
+  headline: `${profile.role}`,
+  description: profile.role,
   inLanguage: "en-US",
   about: { "@id": "#mohammad-heravi" },
   mainEntity: { "@id": "#mohammad-heravi" },
@@ -152,9 +152,9 @@ const profilePageSchema = {
 
 <Layout
   title={profile.name}
-  description={`${profile.statement} ${profile.bio}`}
+  description={profile.role}
   favicon="favicon.svg"
-  thumbnail="screenshot-light.png"
+  thumbnail={profile.photo}
   structuredData={profilePageSchema}
 >
   <main class="mx-auto flex w-full !max-w-none flex-col gap-24 lg:w-[76rem] xl:w-[88rem]">
