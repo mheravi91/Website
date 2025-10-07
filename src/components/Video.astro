@@ -9,12 +9,35 @@ const { source } = Astro.props;
 <div class="w-full flex justify-center">
   <video
     class="w-full h-auto aspect-video rounded-lg"
-    autoplay
     controls
+    autoplay
     muted
     loop
     playsinline
+    preload="auto"
   >
     <source src={source} type="video/mp4" />
   </video>
 </div>
+
+<script is:inline>
+  const video = /** @type {HTMLVideoElement | null} */ (
+    document.currentScript?.previousElementSibling
+  );
+  const attemptPlay = () => {
+    if (!video) return;
+    video.muted = true;
+    const playPromise = video.play();
+    if (playPromise && typeof playPromise.catch === "function") {
+      playPromise.catch(() => {
+        // Autoplay blocked; keep controls available without throwing.
+      });
+    }
+  };
+
+  if (document.readyState === "complete") {
+    attemptPlay();
+  } else {
+    window.addEventListener("load", attemptPlay, { once: true });
+  }
+</script>
