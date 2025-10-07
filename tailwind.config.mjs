@@ -2,12 +2,11 @@
 export default {
 	content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
 	theme: {
-		extend: {},
+		extend: {
+			fontFamily: {
+				sans: ['Noto Sans', 'sans-serif'],
+			},
+		},
 	},
-	plugins: [require('@tailwindcss/typography'),],
-	theme: {
-		fontFamily: {
-			'sans': ['Noto Sans']
-		}
-	}
+	plugins: [require('@tailwindcss/typography')],
 }
