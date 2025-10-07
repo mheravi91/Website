@@ -20,11 +20,30 @@ export async function getStaticPaths() {
 
 const { paper } = Astro.props;
 const { Content } = await render(paper);
-const { title, authors, conference, notes, links, favicon, thumbnail } =
-  paper.data;
+const {
+  title,
+  authors,
+  conference,
+  notes,
+  links,
+  favicon,
+  thumbnail,
+  description: paperDescription,
+  summary,
+} = paper.data;
+
+const pageDescription =
+  paperDescription ??
+  summary ??
+  `${title} by ${authors.map((author) => author.name).join(", ")}`;
 ---
 
-<Layout title={title} favicon={favicon || "favicon.svg"} thumbnail={thumbnail}>
+<Layout
+  title={title}
+  description={pageDescription}
+  favicon={favicon || "favicon.svg"}
+  thumbnail={thumbnail}
+>
   <header class="flex flex-col gap-10 items-center mb-6">
     <h1>{title}</h1>
     <div class="flex flex-col gap-6 items-center">

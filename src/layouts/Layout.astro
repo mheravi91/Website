@@ -1,32 +1,187 @@
 ---
 import "../styles/global.css";
 
+type StructuredData = Record<string, unknown>;
+
 interface Props {
   title: string;
   description?: string;
   favicon: string;
   thumbnail?: string;
+  structuredData?: StructuredData | StructuredData[];
 }
 
-const { title, description, favicon, thumbnail } = Astro.props;
+const {
+  title,
+  description,
+  favicon,
+  thumbnail,
+  structuredData,
+} = Astro.props;
+
+const DEFAULT_DESCRIPTION =
+  "Doctoral researcher in automation and robotics focusing on physics-informed, data-driven modeling and reinforcement learning.";
+const englishName = "Mohammad Heravi";
+const persianName = "محمد هروی";
+const authorNames = `${englishName} | ${persianName}`;
+
+const metaDescription = (description ?? DEFAULT_DESCRIPTION).trim();
+
 const baseUrl = import.meta.env.BASE_URL;
 const prefix = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
+
+const resolveAssetPath = (asset: string) =>
+  asset.startsWith("/") || /^https?:\/\//i.test(asset) ? asset : prefix + asset;
+
+const resolvedSiteUrl = Astro.site ? new URL(Astro.site) : undefined;
+const currentUrl = Astro.url;
+const baseForUrls = resolvedSiteUrl ?? currentUrl;
+
+const canonicalUrl = (() => {
+  if (baseForUrls && currentUrl)
+    return new URL(currentUrl.pathname + currentUrl.search, baseForUrls).href;
+  return currentUrl?.href;
+})();
+
+const makeAbsolute = (path?: string) => {
+  if (!path) return undefined;
+  if (/^https?:\/\//i.test(path)) return path;
+  const normalized = path.startsWith("/") ? path : prefix + path;
+  if (baseForUrls) return new URL(normalized, baseForUrls).href;
+  if (currentUrl) return new URL(normalized, currentUrl).href;
+  return normalized;
+};
+
+const faviconPath = resolveAssetPath(favicon);
+const absoluteFavicon = makeAbsolute(faviconPath);
+const ogImageUrl = thumbnail
+  ? makeAbsolute(resolveAssetPath(thumbnail))
+  : undefined;
+const homepageUrl = makeAbsolute("/");
+const schemaOrigin = (() => {
+  if (homepageUrl) return new URL(homepageUrl).origin;
+  if (baseForUrls) return baseForUrls.origin;
+  return "https://mheravi.ir";
+})();
+
+const personId = `${schemaOrigin}/#mohammad-heravi`;
+const websiteId = `${schemaOrigin}/#website`;
+
+const defaultStructuredData: StructuredData[] = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": personId,
+    name: englishName,
+    alternateName: [persianName],
+    url: homepageUrl ?? `${schemaOrigin}/`,
+    image: "https://papers.mheravi.ir/profile.jpg",
+    email: "mailto:contact@mheravi.ir",
+    jobTitle: "Doctoral Researcher",
+    worksFor: {
+      "@type": "Organization",
+      name: "Tampere University",
+      sameAs: "https://www.tuni.fi/en",
+    },
+    affiliation: {
+      "@type": "Organization",
+      name: "Automation Technology and Mechanical Engineering, Tampere University",
+    },
+    knowsAbout: [
+      "Physics-informed, data-driven modeling",
+      "Robotics",
+      "Control",
+      "Excavation autonomy",
+      "Reinforcement learning",
+    ],
+    sameAs: [
+      "https://mheravi.ir",
+      "https://scholar.google.com/citations?user=DYUEpmsAAAAJ&hl=en",
+      "https://github.com/mheravi91",
+      "https://orcid.org/0009-0007-2582-083X",
+      "https://cal.com/heravi/",
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": websiteId,
+    url: homepageUrl ?? `${schemaOrigin}/`,
+    name: englishName,
+    alternateName: [persianName],
+    description: metaDescription,
+    inLanguage: "en-US",
+    author: { "@id": personId },
+    publisher: { "@id": personId },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${schemaOrigin}/?q={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
+  },
+];
+
+const userStructuredData = structuredData
+  ? Array.isArray(structuredData)
+    ? structuredData
+    : [structuredData]
+  : [];
+
+const normalizedStructuredData = [
+  ...defaultStructuredData,
+  ...userStructuredData,
+];
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    {description && <meta name="description" content={description} />}
+    <meta name="description" content={metaDescription} />
+    <meta name="author" content={authorNames} />
+    <meta name="creator" content={authorNames} />
     <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="index,follow" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="application-name" content={englishName} />
+    <meta name="apple-mobile-web-app-title" content={englishName} />
+    <meta
+      name="theme-color"
+      content="#0f172a"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#020617"
+      media="(prefers-color-scheme: dark)"
+    />
     <meta name="generator" content={Astro.generator} />
 
-    <link rel="icon" type="image/svg+xml" href={prefix + favicon} />
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+    <link rel="icon" type="image/svg+xml" href={faviconPath} />
+    {absoluteFavicon && (
+      <link rel="mask-icon" href={absoluteFavicon} color="#2563eb" />
+    )}
 
     <meta property="og:title" content={title} />
-    {description && <meta property="og:description" content={description} />}
+    <meta property="og:description" content={metaDescription} />
     <meta property="og:type" content="website" />
-    {thumbnail && <meta property="og:image" content={prefix + thumbnail} />}
+    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+    <meta property="og:site_name" content={englishName} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="fa_IR" />
+    {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+    {ogImageUrl && (
+      <meta
+        property="og:image:alt"
+        content={`Preview image for ${englishName}`}
+      />
+    )}
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={metaDescription} />
+    {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -40,6 +195,14 @@ const prefix = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
       integrity="sha384-WsHMgfkABRyG494OmuiNmkAOk8nhO1qE+Y6wns6v+EoNoTNxrWxYpl5ZYWFOLPCM"
       crossorigin="anonymous"
     />
+
+    {normalizedStructuredData.map((schema) => (
+      <script
+        type="application/ld+json"
+        is:inline
+        set:html={JSON.stringify(schema, null, 2)}
+      />
+    ))}
 
     <title>{title}</title>
   </head>

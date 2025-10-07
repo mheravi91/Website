@@ -1,0 +1,6 @@
+# Crawling rules for mheravi.ir
+User-agent: *
+Allow: /
+
+Sitemap: https://mheravi.ir/sitemap.xml
+Host: mheravi.ir

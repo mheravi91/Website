@@ -136,6 +136,18 @@ const featuredPapers = papersWithMeta.slice(
   0,
   Math.min(3, papersWithMeta.length)
 );
+
+const profilePageSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  name: profile.name,
+  alternateName: ["محمد هروی"],
+  headline: profile.statement,
+  description: `${profile.statement} ${profile.bio}`,
+  inLanguage: "en-US",
+  about: { "@id": "#mohammad-heravi" },
+  mainEntity: { "@id": "#mohammad-heravi" },
+};
 ---
 
 <Layout
@@ -143,6 +155,7 @@ const featuredPapers = papersWithMeta.slice(
   description={`${profile.statement} ${profile.bio}`}
   favicon="favicon.svg"
   thumbnail="screenshot-light.png"
+  structuredData={profilePageSchema}
 >
   <main class="mx-auto flex w-full !max-w-none flex-col gap-24 lg:w-[76rem] xl:w-[88rem]">
     <section
