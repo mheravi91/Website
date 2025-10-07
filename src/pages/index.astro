@@ -191,18 +191,20 @@ const profilePageSchema = {
 
           <div class="mt-auto w-full max-w-[28rem] mx-auto flex flex-col gap-6 rounded-[2.25rem] border border-zinc-200 bg-white/95 p-7 text-zinc-900 shadow-[0_36px_120px_-60px_rgba(37,99,235,0.15)] backdrop-blur dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50">
             <div class="flex flex-col gap-2">
-              <span class="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-600 dark:text-zinc-300">
+              <span class="text-sm font-semibold uppercase tracking-[0.24em] text-zinc-600 dark:text-zinc-300">
                 Affiliation
               </span>
-              <p class="text-base text-zinc-900 dark:text-zinc-50">{profile.affiliation}</p>
+              <p class="text-lg font-semibold leading-snug text-zinc-900 dark:text-zinc-50 md:text-xl md:leading-relaxed">
+                {profile.affiliation}
+              </p>
             </div>
             <div class="flex flex-col gap-2">
-              <span class="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-600 dark:text-zinc-300">
+              <span class="text-sm font-semibold uppercase tracking-[0.24em] text-zinc-600 dark:text-zinc-300">
                 Research focus
               </span>
               <div class="flex flex-wrap gap-3">
                 {profile.researchFocus.map((focus) => (
-                  <span class="inline-flex items-center rounded-full bg-blue-100/90 px-4 py-1.5 text-sm font-semibold text-blue-900 shadow-sm shadow-blue-200/60 dark:bg-blue-800/80 dark:text-blue-100 dark:shadow-blue-900/40">
+                  <span class="inline-flex items-center rounded-full border border-blue-200/70 bg-white/90 px-4 py-1.5 text-sm font-semibold tracking-[0.04em] text-blue-800 shadow-sm shadow-blue-200/50 dark:border-blue-700/50 dark:bg-blue-900/60 dark:text-blue-100 dark:shadow-blue-900/40">
                     {focus}
                   </span>
                 ))}
@@ -297,38 +299,42 @@ const profilePageSchema = {
             </div>
             <div class="flex flex-col gap-6 rounded-[2.25rem] border border-zinc-200 bg-white/95 p-6 text-zinc-900 shadow-[0_24px_80px_-60px_rgba(37,99,235,0.12)] backdrop-blur dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50">
               <div class="flex flex-col gap-2">
-                <span class="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-600 dark:text-zinc-300">
+                <span class="text-sm font-semibold uppercase tracking-[0.24em] text-zinc-600 dark:text-zinc-300">
                   Affiliation
                 </span>
-                <p class="text-base text-zinc-900 dark:text-zinc-50">{profile.affiliation}</p>
+                  <p class="text-lg font-semibold leading-snug text-zinc-900 dark:text-zinc-50 md:text-xl md:leading-relaxed">
+                    {profile.affiliation}
+                  </p>
               </div>
               <div class="flex flex-col gap-2">
-                <span class="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-600 dark:text-zinc-300">
+                <span class="text-sm font-semibold uppercase tracking-[0.24em] text-zinc-600 dark:text-zinc-300">
                   Location
                 </span>
-                <p class="text-base text-zinc-900 dark:text-zinc-50">{profile.location}</p>
+                  <p class="text-lg font-semibold leading-snug text-zinc-900 dark:text-zinc-50 md:text-xl md:leading-relaxed">
+                    {profile.location}
+                  </p>
               </div>
               <div class="flex flex-col gap-2">
-                <span class="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-600 dark:text-zinc-300">
+                <span class="text-sm font-semibold uppercase tracking-[0.24em] text-zinc-600 dark:text-zinc-300">
                   Primary email
                 </span>
-                <a
-                  href={`mailto:${profile.email}`}
-                  class="text-base font-semibold text-blue-700 dark:text-blue-200 hover:underline"
-                >
+                  <a
+                    href={`mailto:${profile.email}`}
+                    class="text-lg font-semibold text-blue-700 dark:text-blue-200 underline-offset-4 hover:underline md:text-xl"
+                  >
                   {profile.email}
                 </a>
               </div>
               <div class="flex flex-col gap-2">
-                <span class="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-600 dark:text-zinc-300">
+                <span class="text-sm font-semibold uppercase tracking-[0.24em] text-zinc-600 dark:text-zinc-300">
                   Research focus
                 </span>
                 <div class="flex flex-wrap gap-3">
-                  {profile.researchFocus.map((focus) => (
-                    <span class="inline-flex items-center rounded-full bg-blue-100/90 px-4 py-1.5 text-sm font-semibold text-blue-900 shadow-sm shadow-blue-200/60 dark:bg-blue-800/80 dark:text-blue-100 dark:shadow-blue-900/40">
-                      {focus}
-                    </span>
-                  ))}
+                    {profile.researchFocus.map((focus) => (
+                      <span class="inline-flex items-center rounded-full border border-blue-200/70 bg-white/90 px-4 py-1.5 text-sm font-semibold tracking-[0.04em] text-blue-800 shadow-sm shadow-blue-200/50 dark:border-blue-700/50 dark:bg-blue-900/60 dark:text-blue-100 dark:shadow-blue-900/40">
+                        {focus}
+                      </span>
+                    ))}
                 </div>
               </div>
               <p class="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
