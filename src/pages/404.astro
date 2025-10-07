@@ -1,0 +1,36 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const title = "Page Not Found – Mohammad Heravi";
+const description =
+  "The page you are looking for does not exist. Return to Mohammad Heravi's homepage to explore research and publications.";
+---
+
+<Layout
+  title={title}
+  description={description}
+  favicon="favicon.svg"
+  socialTitle="Page Not Found | Mohammad Heravi"
+  socialDescription={description}
+  socialImage="/profile_croped.jpg"
+  socialImageAlt="Portrait of Mohammad Heravi"
+>
+  <main class="mx-auto flex min-h-[60vh] w-full max-w-[48rem] flex-col items-center justify-center gap-8 text-center">
+    <p class="text-sm font-semibold uppercase tracking-[0.35em] text-blue-500 dark:text-blue-200">
+      404 — Page Not Found
+    </p>
+    <h1 class="text-4xl font-semibold text-zinc-900 dark:text-zinc-50 sm:text-5xl">
+      This page went missing.
+    </h1>
+    <p class="text-base text-zinc-600 dark:text-zinc-300 sm:text-lg">
+      The URL might be outdated or typed incorrectly. You can head back to the homepage to continue exploring Mohammad Heravi’s research.
+    </p>
+    <a
+      href="/"
+      class="inline-flex items-center gap-3 rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition hover:-translate-y-1 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+    >
+      Go to homepage
+      <span aria-hidden="true">→</span>
+    </a>
+  </main>
+</Layout>

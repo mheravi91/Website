@@ -118,6 +118,7 @@ const keywordsArray = Array.isArray(keywordsProp)
 const keywordsContent = Array.from(new Set([...DEFAULT_KEYWORDS, ...keywordsArray]))
   .map((keyword) => keyword.trim())
   .filter(Boolean);
+const keywordsString = keywordsContent.join(", ");
 
 const defaultStructuredData: StructuredData[] = [
   {
@@ -143,7 +144,6 @@ const defaultStructuredData: StructuredData[] = [
       "Reinforcement learning",
     ],
     knowsLanguage: ["en", "fa"],
-    keywords: keywordsContent,
     sameAs: [
       "https://mheravi.ir",
       "https://scholar.google.com/citations?user=DYUEpmsAAAAJ&hl=en",
@@ -163,7 +163,7 @@ const defaultStructuredData: StructuredData[] = [
     inLanguage: "en-US",
     author: { "@id": personId },
     publisher: { "@id": personId },
-    keywords: keywordsContent,
+    ...(keywordsString ? { keywords: keywordsString } : {}),
     potentialAction: {
       "@type": "SearchAction",
       target: `${schemaOrigin}/?q={search_term_string}`,
@@ -214,9 +214,7 @@ const ogImageType = guessMimeType(ogImageUrl);
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={metaDescription} />
-    {keywordsContent.length > 0 && (
-      <meta name="keywords" content={keywordsContent.join(", ")} />
-    )}
+    {keywordsString && <meta name="keywords" content={keywordsString} />}
     <meta name="author" content={authorNames} />
     <meta name="creator" content={authorNames} />
     <meta property="profile:first_name" content={englishFirstName} />
