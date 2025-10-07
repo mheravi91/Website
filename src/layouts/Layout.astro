@@ -13,6 +13,7 @@ interface Props {
   socialDescription?: string;
   socialImage?: string;
   socialImageAlt?: string;
+  keywords?: string[] | string;
 }
 
 const {
@@ -25,13 +26,30 @@ const {
   socialDescription,
   socialImage,
   socialImageAlt,
+  keywords: keywordsProp,
 } = Astro.props;
 
 const DEFAULT_DESCRIPTION =
   "Doctoral researcher in automation and robotics focusing on physics-informed, data-driven modeling and reinforcement learning.";
 const englishName = "Mohammad Heravi";
 const persianName = "محمد هروی";
+const englishFirstName = "Mohammad";
+const englishLastName = "Heravi";
 const authorNames = `${englishName} | ${persianName}`;
+const DEFAULT_KEYWORDS = [
+  englishName,
+  persianName,
+  "Mohammad Heravi Tampere University",
+  "Automation Technology and Mechanical Engineering",
+  "Physics-informed data-driven modeling",
+  "Field robotics",
+  "Industrial robotics",
+  "Reinforcement learning",
+  "Robotics research",
+  "Autonomous excavation",
+  "Control systems",
+  "Tampere University doctoral researcher",
+];
 
 const metaDescription = (description ?? DEFAULT_DESCRIPTION).trim();
 
@@ -87,6 +105,19 @@ const schemaOrigin = (() => {
 
 const personId = `${schemaOrigin}/#mohammad-heravi`;
 const websiteId = `${schemaOrigin}/#website`;
+const tampereId = `${schemaOrigin}/#tampere-university`;
+const departmentId = `${schemaOrigin}/#automation-technology-and-mechanical-engineering`;
+const keywordsArray = Array.isArray(keywordsProp)
+  ? keywordsProp
+  : keywordsProp
+    ? keywordsProp
+        .split(",")
+        .map((keyword) => keyword.trim())
+        .filter(Boolean)
+    : DEFAULT_KEYWORDS;
+const keywordsContent = Array.from(new Set([...DEFAULT_KEYWORDS, ...keywordsArray]))
+  .map((keyword) => keyword.trim())
+  .filter(Boolean);
 
 const defaultStructuredData: StructuredData[] = [
   {
@@ -94,20 +125,16 @@ const defaultStructuredData: StructuredData[] = [
     "@type": "Person",
     "@id": personId,
     name: englishName,
-    alternateName: [persianName],
+    alternateName: [persianName, "Dr. Mohammad Heravi", "Mohammad Heravi PhD", "محمد هروی محقق"],
     url: homepageUrl ?? `${schemaOrigin}/`,
     image: "https://papers.mheravi.ir/profile.jpg",
     email: "mailto:contact@mheravi.ir",
     jobTitle: "Doctoral Researcher",
-    worksFor: {
-      "@type": "Organization",
-      name: "Tampere University",
-      sameAs: "https://www.tuni.fi/en",
-    },
-    affiliation: {
-      "@type": "Organization",
-      name: "Automation Technology and Mechanical Engineering, Tampere University",
-    },
+    worksFor: { "@id": tampereId },
+    affiliation: [
+      { "@id": departmentId },
+      { "@id": tampereId },
+    ],
     knowsAbout: [
       "Physics-informed, data-driven modeling",
       "Robotics",
@@ -115,6 +142,8 @@ const defaultStructuredData: StructuredData[] = [
       "Excavation autonomy",
       "Reinforcement learning",
     ],
+    knowsLanguage: ["en", "fa"],
+    keywords: keywordsContent,
     sameAs: [
       "https://mheravi.ir",
       "https://scholar.google.com/citations?user=DYUEpmsAAAAJ&hl=en",
@@ -134,11 +163,31 @@ const defaultStructuredData: StructuredData[] = [
     inLanguage: "en-US",
     author: { "@id": personId },
     publisher: { "@id": personId },
+    keywords: keywordsContent,
     potentialAction: {
       "@type": "SearchAction",
       target: `${schemaOrigin}/?q={search_term_string}`,
       "query-input": "required name=search_term_string",
     },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "CollegeOrUniversity",
+    "@id": tampereId,
+    name: "Tampere University",
+    alternateName: ["Tampereen yliopisto"],
+    url: "https://www.tuni.fi/en",
+    sameAs: [
+      "https://www.wikidata.org/wiki/Q1322419",
+      "https://en.wikipedia.org/wiki/Tampere_University",
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "@id": departmentId,
+    name: "Automation Technology and Mechanical Engineering, Tampere University",
+    parentOrganization: { "@id": tampereId },
   },
 ];
 
@@ -165,8 +214,14 @@ const ogImageType = guessMimeType(ogImageUrl);
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={metaDescription} />
+    {keywordsContent.length > 0 && (
+      <meta name="keywords" content={keywordsContent.join(", ")} />
+    )}
     <meta name="author" content={authorNames} />
     <meta name="creator" content={authorNames} />
+    <meta property="profile:first_name" content={englishFirstName} />
+    <meta property="profile:last_name" content={englishLastName} />
+    <meta property="profile:username" content="mheravi91" />
     <meta name="viewport" content="width=device-width" />
     <meta name="robots" content="index,follow" />
     <meta name="color-scheme" content="light dark" />

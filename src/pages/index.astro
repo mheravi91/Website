@@ -137,17 +137,44 @@ const featuredPapers = papersWithMeta.slice(
   Math.min(3, papersWithMeta.length)
 );
 
+const siteOrigin = Astro.site ? Astro.site.origin : "https://mheravi.ir";
+
 const profilePageSchema = {
   "@context": "https://schema.org",
   "@type": "ProfilePage",
   name: profile.name,
-  alternateName: ["محمد هروی"],
+  alternateName: ["محمد هروی", "Mohammad Heravi"],
   headline: `${profile.role}`,
-  description: profile.role,
-  inLanguage: "en-US",
+  description: profile.statement,
+  inLanguage: ["en-US", "fa-IR"],
+  keywords: [
+    profile.name,
+    "محمد هروی",
+    profile.role,
+    profile.affiliation,
+    ...profile.researchFocus,
+  ],
+  primaryImageOfPage: profile.photo
+    ? { "@type": "ImageObject", url: `${siteOrigin}${profile.photo}` }
+    : undefined,
+  sameAs: contactLinks
+    .filter((link) => link.href.startsWith("http"))
+    .map((link) => link.href),
   about: { "@id": "#mohammad-heravi" },
   mainEntity: { "@id": "#mohammad-heravi" },
 };
+
+const pageKeywords = [
+  profile.name,
+  "محمد هروی",
+  profile.role,
+  profile.affiliation,
+  profile.location,
+  ...profile.researchFocus,
+  "Tampere University",
+  "Automation Technology and Mechanical Engineering",
+  "Field robotics research",
+];
 ---
 
 <Layout
@@ -160,6 +187,7 @@ const profilePageSchema = {
   socialImage="/profile_croped.jpg"
   socialImageAlt="Portrait of Mohammad Heravi"
   structuredData={profilePageSchema}
+  keywords={pageKeywords}
 >
   <main class="mx-auto flex w-full !max-w-none flex-col gap-24 lg:w-[76rem] xl:w-[88rem]">
     <section
@@ -226,6 +254,12 @@ const profilePageSchema = {
               class="text-left text-4xl font-semibold leading-tight text-balance text-white sm:text-5xl md:text-6xl"
             >
               {profile.name}
+              <span
+                class="mt-2 block text-3xl font-semibold text-blue-100/90 sm:text-4xl"
+                lang="fa"
+                dir="rtl"
+              >
+              </span>
             </h1>
             <p class="text-left text-base text-zinc-200/90 sm:text-lg md:text-xl">
               {profile.statement}
