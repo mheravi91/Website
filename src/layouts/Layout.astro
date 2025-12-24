@@ -100,7 +100,7 @@ const homepageUrl = makeAbsolute("/");
 const schemaOrigin = (() => {
   if (homepageUrl) return new URL(homepageUrl).origin;
   if (baseForUrls) return baseForUrls.origin;
-  return "https://mheravi.ir";
+  return "https://heravi.dev";
 })();
 
 const personId = `${schemaOrigin}/#mohammad-heravi`;
@@ -128,8 +128,8 @@ const defaultStructuredData: StructuredData[] = [
     name: englishName,
     alternateName: [persianName, "Dr. Mohammad Heravi", "Mohammad Heravi PhD", "محمد هروی محقق"],
     url: homepageUrl ?? `${schemaOrigin}/`,
-    image: "https://papers.mheravi.ir/profile.jpg",
-    email: "mailto:contact@mheravi.ir",
+    image: `${schemaOrigin}/profile.jpg`,
+    email: "mailto:contact@heravi.dev",
     jobTitle: "Doctoral Researcher",
     worksFor: { "@id": tampereId },
     affiliation: [
@@ -145,7 +145,7 @@ const defaultStructuredData: StructuredData[] = [
     ],
     knowsLanguage: ["en", "fa"],
     sameAs: [
-      "https://mheravi.ir",
+      "https://heravi.dev",
       "https://scholar.google.com/citations?user=DYUEpmsAAAAJ&hl=en",
       "https://github.com/mheravi91",
       "https://orcid.org/0009-0007-2582-083X",

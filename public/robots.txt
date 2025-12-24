@@ -1,6 +1,6 @@
-# Crawling rules for mheravi.ir
+# Crawling rules for heravi.dev
 User-agent: *
 Allow: /
 
-Sitemap: https://mheravi.ir/sitemap.xml
-Host: mheravi.ir
+Sitemap: https://heravi.dev/sitemap.xml
+Host: heravi.dev
