@@ -14,6 +14,7 @@ interface Props {
   socialImage?: string;
   socialImageAlt?: string;
   keywords?: string[] | string;
+  robots?: string;
 }
 
 const {
@@ -27,6 +28,7 @@ const {
   socialImage,
   socialImageAlt,
   keywords: keywordsProp,
+  robots: robotsProp,
 } = Astro.props;
 
 const DEFAULT_DESCRIPTION =
@@ -119,6 +121,7 @@ const keywordsContent = Array.from(new Set([...DEFAULT_KEYWORDS, ...keywordsArra
   .map((keyword) => keyword.trim())
   .filter(Boolean);
 const keywordsString = keywordsContent.join(", ");
+const robots = (robotsProp ?? "index,follow").trim();
 
 const defaultStructuredData: StructuredData[] = [
   {
@@ -221,7 +224,7 @@ const ogImageType = guessMimeType(ogImageUrl);
     <meta property="profile:last_name" content={englishLastName} />
     <meta property="profile:username" content="mheravi91" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="robots" content="index,follow" />
+    <meta name="robots" content={robots} />
     <meta name="color-scheme" content="light dark" />
     <meta name="application-name" content={englishName} />
     <meta name="apple-mobile-web-app-title" content={englishName} />

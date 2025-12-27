@@ -36,6 +36,45 @@ const pageDescription =
   paperDescription ??
   summary ??
   `${title} by ${authors.map((author) => author.name).join(", ")}`;
+
+const siteOrigin = Astro.site ? Astro.site.origin : "https://heravi.dev";
+const paperUrl = `${siteOrigin}/papers/${paper.id}/`;
+const publicationYear = typeof paper.data.year === "number" ? paper.data.year : undefined;
+const publicationDate = publicationYear ? `${publicationYear}-01-01` : undefined;
+const resolvedThumbnail = thumbnail
+  ? thumbnail.startsWith("/")
+    ? `${siteOrigin}${thumbnail}`
+    : `${siteOrigin}/${thumbnail}`
+  : undefined;
+const paperKeywords = Array.from(
+  new Set(
+    [
+      title,
+      conference,
+      ...authors.map((author) => author.name),
+      ...(paper.data.tags ?? []),
+    ].filter(Boolean) as string[]
+  )
+);
+
+const paperSchema = {
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  headline: title,
+  name: title,
+  url: paperUrl,
+  description: pageDescription,
+  inLanguage: "en",
+  ...(publicationDate ? { datePublished: publicationDate, dateModified: publicationDate } : {}),
+  ...(resolvedThumbnail ? { image: resolvedThumbnail } : {}),
+  ...(conference ? { isPartOf: { "@type": "PublicationVolume", name: conference } } : {}),
+  author: authors.map((author) => ({
+    "@type": "Person",
+    name: author.name,
+    ...(author.url ? { url: author.url } : {}),
+    ...(author.institution ? { affiliation: author.institution } : {}),
+  })),
+};
 ---
 
 <Layout
@@ -43,6 +82,11 @@ const pageDescription =
   description={pageDescription}
   favicon={favicon || "favicon.svg"}
   thumbnail={thumbnail}
+  socialTitle={title}
+  socialDescription={pageDescription}
+  socialImage={thumbnail}
+  structuredData={[paperSchema]}
+  keywords={paperKeywords}
 >
   <header class="flex flex-col gap-10 items-center mb-6">
     <nav class="w-full max-w-4xl">
